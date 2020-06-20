@@ -1,0 +1,53 @@
+import java.util.Scanner;
+
+public class TicTacToe {
+    public static void main(String[] args) {
+        System.out.println("Witaj w grze, podaj rozmiar planszy");
+        int wymiar = new Scanner(System.in).nextInt();
+        char obecnySymbol = 'X';
+        char[][] plansza = new char[wymiar][wymiar];
+
+        while (true) {
+            Main.drukujPlansze(plansza);
+            boolean ruchPoprawny = wykonajRuch(plansza,obecnySymbol);
+            if(ruchPoprawny) {
+                    System.out.println("Gratulacje "+obecnySymbol);
+                    czyKontynuowac = false;
+                }
+                obecnySymbol = obecnySymbol == 'X' ? 'O' : 'X';
+            }
+    }
+
+public static boolean wykonajRuch(char[][] plansza, char symbol) {
+    System.out.println(symbol + " twój ruch");
+            System.out.println("Podaj indeks wiersza");
+            int wiersz = new Scanner(System.in).nextInt();
+            System.out.println("Podaj indeks kolumny");
+            int kolumna = new Scanner(System.in).nextInt();
+            boolean ruchPoprawny = plansza[wiersz][kolumna] == 0;
+            if(!ruchPoprawny) {
+                System.out.println("Ruch niepoprawny");
+                return false;
+            }
+            plansza[wiersz][kolumna] = symbol;
+}
+
+public static void drukujPlansze(char[][] plansza) {
+    int wymiar = plansza.length;
+    // nagłówki kolumn
+    System.out.print("\t");
+    // pętla drukująca nagłówki kolumn
+    for(int i = 0; i<wymiar;i++) {
+        System.out.print(i+"\t");
+    }
+    System.out.println();
+    // drukowanie wierszy                    
+    for(int wiersz=0; wiersz<wymiar;wiersz++) {
+        System.out.print(wiersz + ":\t");
+        for(int kolumna=0;kolumna<wymiar;kolumna++) {
+            System.out.print(plansza[wiersz][kolumna] + "\t");
+        }
+        System.out.println();
+    }                    
+}
+}
