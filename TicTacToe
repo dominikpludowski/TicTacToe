@@ -1,8 +1,8 @@
 import java.util.Scanner;
 
-public class TicTacToe {
+public class Main {
     public static void main(String[] args) {
-        System.out.println("Witaj w grze, podaj rozmiar planszy");
+        System.out.println("Witaj w grze, podaj rozmiar planszy!");
         int wymiar = new Scanner(System.in).nextInt();
         char obecnySymbol = 'X';
         char[][] plansza = new char[wymiar][wymiar];
@@ -10,26 +10,26 @@ public class TicTacToe {
         while (true) {
             Main.drukujPlansze(plansza);
             boolean ruchPoprawny = wykonajRuch(plansza,obecnySymbol);
-            if(ruchPoprawny) {
-                    System.out.println("Gratulacje "+obecnySymbol);
-                    czyKontynuowac = false;
-                }
-                obecnySymbol = obecnySymbol == 'X' ? 'O' : 'X';
-            }
+            if(!ruchPoprawny) continue;
+            obecnySymbol = obecnySymbol == 'X' ? 'O' : 'X';
+        }
     }
 
 public static boolean wykonajRuch(char[][] plansza, char symbol) {
     System.out.println(symbol + " twój ruch");
+            // pytania o położenie zanku
             System.out.println("Podaj indeks wiersza");
             int wiersz = new Scanner(System.in).nextInt();
             System.out.println("Podaj indeks kolumny");
             int kolumna = new Scanner(System.in).nextInt();
             boolean ruchPoprawny = plansza[wiersz][kolumna] == 0;
             if(!ruchPoprawny) {
+                // błędny ruch
                 System.out.println("Ruch niepoprawny");
-                return false;
+                return false; 
             }
             plansza[wiersz][kolumna] = symbol;
+            return true;
 }
 
 public static void drukujPlansze(char[][] plansza) {
