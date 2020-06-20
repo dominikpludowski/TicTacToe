@@ -1,0 +1,124 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Witaj w grze - Kółko i krzyżyk, podaj rozmiar planszy!");
+        int wymiar = new Scanner(System.in).nextInt();
+        char obecnySymbol = 'X';
+        // jeżeli kod w pętli zmieni wartość w tej zmiennej na true, nie wykona się kolejna iteracja
+        char[][] plansza = new char[wymiar][wymiar];
+        boolean czyKontynuowac = true;
+        int licznikRuchow = 0;
+        // drukuje plansze zeby był widoczny rezultat
+        while (czyKontynuowac && licznikRuchow<=wymiar*wymiar) {
+            Main.drukujPlansze(plansza);
+            boolean ruchPoprawny = wykonajRuch(plansza,obecnySymbol);
+            if(ruchPoprawny) {
+                // zwiększam licznik ruchów o 1
+                licznikRuchow++;
+                //sprawdzenie wygranych
+                boolean wygranaWiersze = sprawdzWiersze(plansza,obecnySymbol);
+                boolean wygranaKolumny = sprawdzKolumny(plansza,obecnySymbol);
+                boolean wygranaSkos1 = sprawdzSkos1(plansza,obecnySymbol);
+                boolean wygranaSkos2 = sprawdzSkos2(plansza,obecnySymbol);
+                if(wygranaWiersze || wygranaKolumny || wygranaSkos1) {
+                    System.out.println("Gratulacje "+obecnySymbol+"\nWygrałeś mistrzu!!!");
+                    czyKontynuowac = false;
+                }
+                // zmieniam aktywnego gracza na przeciwnego
+                obecnySymbol = obecnySymbol == 'X' ? 'O' : 'X';
+            
+            }
+            // zakonczenie gry
+            drukujPlansze(plansza);
+                System.out.println("Koniec gry :)");
+        }
+    }
+
+    public static boolean sprawdzWiersze(char[][] plansza, char symbol) {
+        int wymiar = plansza.length;
+        for(int wiersz=0; wiersz<wymiar;wiersz++) {
+            boolean wygrana = true;
+            for(int kolumna=0;kolumna<wymiar;kolumna++) {
+                if(plansza[wiersz][kolumna]!=symbol) {
+                    wygrana = false;
+                    break;
+                }
+            }
+            if(wygrana){return true;}
+        }
+        return false;
+    }
+
+    public static boolean sprawdzKolumny(char[][] plansza, char symbol) {
+        int wymiar = plansza.length;
+        for(int kolumna=0; kolumna<wymiar;kolumna++) {
+            boolean wygrana = true;
+            for(int wiersz=0;wiersz<wymiar;wiersz++) {
+                if(plansza[wiersz][kolumna]!=symbol) {
+                    wygrana = false;
+                    break;
+                }
+            }
+            if(wygrana){return true;}
+        }
+        return false;
+    }
+
+    public static boolean sprawdzSkos1(char[][] plansza, char symbol) {
+        int wymiar = plansza.length;
+        for(int i=0;i<wymiar;i++) {
+            if(plansza[i][i]!=symbol) {
+                return false;
+            }
+        }
+        return true;       
+    }    
+
+    public static boolean sprawdzSkos2(char[][] plansza, char symbol) {
+        int wymiar = plansza.length;
+        for(int i=0;i<wymiar;i++) {
+            if(plansza[i][wymiar - i - 1]!=symbol) {
+                return false;
+            }
+        }
+        return true;       
+    }    
+
+    public static boolean wykonajRuch(char[][] plansza, char symbol) {
+        System.out.println(symbol + " twój ruch");
+            // pytania o położenie zanku
+            System.out.println("Podaj indeks wiersza");
+            int wiersz = new Scanner(System.in).nextInt();
+            System.out.println("Podaj indeks kolumny");
+            int kolumna = new Scanner(System.in).nextInt();
+            boolean ruchPoprawny = plansza[wiersz][kolumna] == 0;
+            if(!ruchPoprawny) {
+                // błędny ruch
+                System.out.println("Ruch niepoprawny");
+                return false; 
+            }
+            plansza[wiersz][kolumna] = symbol;
+            return true;
+      }
+      
+
+    public static void drukujPlansze(char[][] plansza) {
+        int wymiar = plansza.length;
+        // nagłówki kolumn
+        System.out.print("\t");
+        // pętla drukująca nagłówki kolumn
+        for(int i = 0; i<wymiar;i++) {
+            System.out.print(i+"\t");
+        }
+        System.out.println();
+        // drukowanie wierszy                    
+        for(int wiersz=0; wiersz<wymiar;wiersz++) {
+            System.out.print(wiersz + ":\t");
+            for(int kolumna=0;kolumna<wymiar;kolumna++) {
+                System.out.print(plansza[wiersz][kolumna] + "\t");
+            }
+            System.out.println();
+        }  
+    }                        
+}
