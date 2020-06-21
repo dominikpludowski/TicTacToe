@@ -8,6 +8,7 @@ public class Main {
         // jeżeli kod w pętli zmieni wartość w tej zmiennej na true, nie wykona się kolejna iteracja
         char[][] plansza = new char[wymiar][wymiar];
         boolean czyKontynuowac = true;
+        // licznik ruchow (stworzony by gra zakończyła się po wykorzystaniu wszystkich ruchów)
         int licznikRuchow = 0;
         // drukuje plansze zeby był widoczny rezultat
         while (czyKontynuowac && licznikRuchow<=wymiar*wymiar) {
@@ -35,38 +36,74 @@ public class Main {
         }
     }
 
+    // sprawdzenie wygranych w wierszach
     public static boolean sprawdzWiersze(char[][] plansza, char symbol) {
         int wymiar = plansza.length;
+        // licznik 'wiersz' będzie sprawdzał w kolejnych iteracjach
+        // kolejne kolumny od 0 aż do 'wymiar'
         for(int wiersz=0; wiersz<wymiar;wiersz++) {
+            // zakładam optymistycznie, że obecny 'symbol' wygrał
             boolean wygrana = true;
+            // licznik 'wiersz' będzie przesuwał się po kolejnych
+            // kolumnach dla danego wiersza
             for(int kolumna=0;kolumna<wymiar;kolumna++) {
+                // jeżeli trafię na pierwszą komórkę, w której
+                // nie ma symbolu, to wiem, że
+                // w tym wierszu nie wygrał, więc ustawiam
+                // flagę 'wygrana' na false i przerywam sprawdzanie
+                // kolejnych komórek
                 if(plansza[wiersz][kolumna]!=symbol) {
                     wygrana = false;
                     break;
                 }
             }
-            if(wygrana){return true;}
+            // jeżeli po sprawdzeniu danego wiersza
+            // flaga 'wygrana' dalej ma wartość true, to znaczy
+            // że gracz wygrał w tym wierszu
+            // przerywam więc całą metodę zwracając true
+            if(wygrana) {
+                return true;
+            }
         }
         return false;
     }
-
+    
+    // sprawdzenie wygranych w kolumnach
     public static boolean sprawdzKolumny(char[][] plansza, char symbol) {
         int wymiar = plansza.length;
+        // licznik 'kolumna' będzie sprawdzał w kolejnych iteracjach
+        // kolejne kolumny od 0 aż do 'wymiar'
         for(int kolumna=0; kolumna<wymiar;kolumna++) {
+            // zakładam optymistycznie, że obecny 'symbol' wygrał
             boolean wygrana = true;
+            // licznik 'kolumna' będzie przesuwał się po kolejnych
+            // wierszach dla danej kolumny
             for(int wiersz=0;wiersz<wymiar;wiersz++) {
+                // jeżeli trafię na pierwszą komórkę, w której
+                // nie ma symbolu, to wiem, że
+                // w tej kolumnie nie wygrał, więc ustawiam
+                // flagę 'wygrana' na false i przerywam sprawdzanie
+                // kolejnych komórek
                 if(plansza[wiersz][kolumna]!=symbol) {
                     wygrana = false;
                     break;
                 }
             }
-            if(wygrana){return true;}
+            // jeżeli po sprawdzeniu danej kolumny
+            // flaga 'wygrana' dalej ma wartość true, to znaczy
+            // że gracz wygrał w tej kolumnie
+            // przerywam więc całą metodę zwracając true
+            if(wygrana) {
+                return true;
+            }
         }
         return false;
     }
 
+    // sprawdzenie wygranych w Skosie od (0,0)
     public static boolean sprawdzSkos1(char[][] plansza, char symbol) {
         int wymiar = plansza.length;
+        // formuła rozpoczęcia sprawdzania
         for(int i=0;i<wymiar;i++) {
             if(plansza[i][i]!=symbol) {
                 return false;
@@ -75,9 +112,11 @@ public class Main {
         return true;       
     }    
 
+    // sprawdznie wygranych w Skosie od (0,wymiar-i-1)
     public static boolean sprawdzSkos2(char[][] plansza, char symbol) {
         int wymiar = plansza.length;
         for(int i=0;i<wymiar;i++) {
+            // formuła rozpoczęcia sprawdzania
             if(plansza[i][wymiar - i - 1]!=symbol) {
                 return false;
             }
@@ -92,13 +131,19 @@ public class Main {
             int wiersz = new Scanner(System.in).nextInt();
             System.out.println("Podaj indeks kolumny");
             int kolumna = new Scanner(System.in).nextInt();
+            // jeżeli pole jest wolne
             boolean ruchPoprawny = plansza[wiersz][kolumna] == 0;
             if(!ruchPoprawny) {
                 // błędny ruch
                 System.out.println("Ruch niepoprawny");
+                // zwroce false, jeżeli miejsce było zajęte
                 return false; 
             }
+            // jeżeli pole jest wolne
+            // wstaw tam symbol obecnego gracza
             plansza[wiersz][kolumna] = symbol;
+            // zwracam true jezeli ruch sie udał
+            // jeżeli kod dojdzie do tej linii to znaczy ze się udał
             return true;
       }
       
